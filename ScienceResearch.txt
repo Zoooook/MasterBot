@@ -1,0 +1,207 @@
+; This file is used in the actual bot, so be careful while editing it.
+
+; Don't touch the following 4 lines.
+ClickScience(Alt){
+  global
+  MenuButton(1,3) ; Science Research
+  if(FlashPixelGetColor(305,490)<0x800000){
+
+
+
+    if(Alt=0){
+
+      ; If you want your main to do science research, copy lines from the bottom of the file into this space.
+      ; Each line is a mouse click, so make sure to get the category line, i.e., if you want to research Quality
+      ; Materials, make sure to grab the Logistics Construction Science line as well.
+
+      ; The bot will click the science in the order you place it here, until it activates one of them. You should put
+      ; them in priority order. It may be a good idea to put later tech first, so that it researches it as soon as
+      ; possible, instead of waiting for earlier tech to max out first.
+      ; You may not want to put final techs here, so the bot doesn't burn your gold.
+
+
+
+    }
+
+    if(Alt>0){
+
+      ; If you want your alts to do science research, copy lines from the bottom of the file into this space.
+      ; You can define more blocks or change this one if you want to be more specific about which alts do what research.
+      ; Your syntax can do things like this:
+
+      ; if(Alt=1) or (Alt=3) or (Alt=5){
+      ;   ScienceClick(...)
+      ; }
+
+      ; if(Alt>5) and (Alt<=10){
+      ;   ScienceClick(...)
+      ; }
+
+
+
+    }
+
+
+; Don't touch the following 4 lines.
+  }
+  FlashClick(817,145) ; X
+}
+/*
+
+
+
+      ScienceClick(304,132) ; Logistics Construction Science
+
+      ScienceClick(328,229,.5) ; Concurrent Construction
+      ScienceClick(441,230,.5) ; Construction Boost
+      ScienceClick(552,229,.5) ; Quality Materials
+
+      ScienceClick(327,322,.5) ; Ship Building Boost
+      ScienceClick(443,320,.5) ; Ship Building Logistics
+      ScienceClick(553,318,.5) ; Sync Shipbuilding
+      ScienceClick(657,318,.5) ; Repair Technology
+
+      ScienceClick(327,411,.5) ; High Yield Mining
+      ScienceClick(441,411,.5) ; High Yield Chemistry
+      ScienceClick(554,409,.5) ; High Yield Investing
+      ScienceClick(657,409,.5) ; Expand Capacity
+
+
+
+      ScienceClick(379,132) ; Planetary Defense Science
+
+      ScienceClick(282,306,.5) ; Energy Control
+      ScienceClick(388,236,.5) ; Rapid Defense Buildup
+      ScienceClick(502,241,.5) ; Emplacement Mastery
+      ScienceClick(616,240,.5) ; Range Extension
+
+      ScienceClick(388,370,.5) ; Defense Enhancement
+      ScienceClick(503,372,.5) ; Utmost Defense Buildup
+      ScienceClick(618,372,.5) ; Thor Buildup
+      ScienceClick(727,372,.5) ; Augment Propulsion
+
+
+
+      ScienceClick(453,131) ; Ballistic Science
+
+      ScienceClick(244,227,.5) ; Ballistics
+      ScienceClick(318,229,.5) ; Ballistic Malice
+      ScienceClick(392,228,.5) ; Ballistic Crackdown
+      ScienceClick(318,329,.5) ; Steady Control Tech
+      ScienceClick(393,328,.5) ; Precise Ballistics
+
+      ScienceClick(473,276,.5) ; Shield Penetration
+      ScienceClick(552,224,.5) ; Depleted Uranium Bomb Research
+      ScienceClick(550,326,.5) ; Fire Bomb Research
+      ScienceClick(634,272,.5) ; Improved Penetration
+      ScienceClick(707,273,.5) ; Victory Rush
+
+      ScienceClick(391,411,.5) ; Ballistic Scattering
+      ScienceClick(472,411,.5) ; Improved Ballistic Scattering
+      ScienceClick(549,408,.5) ; Hop Bomb Research
+      ScienceClick(626,408,.5) ; Demolition Warhead Research
+      ScienceClick(701,409,.5) ; Range Extension
+
+      ScienceClick(790,336,.5) ; Artillery Specialization
+
+
+
+      ScienceClick(528,131) ; Directional Science
+
+      ScienceClick(240,314,.5) ; Optics
+      ScienceClick(328,421,.5) ; Directional Accuracy
+      ScienceClick(404,418,.5) ; Radiative Interference
+      ScienceClick(481,417,.5) ; Electronic Interference
+
+      ScienceClick(328,317,.5) ; Eagle Eye
+      ScienceClick(405,315,.5) ; Energy Penetration
+      ScienceClick(480,316,.5) ; Energy Accumulation
+
+      ScienceClick(328,218,.5) ; Directional Malice
+      ScienceClick(404,218,.5) ; Pierce
+      ScienceClick(482,217,.5) ; Improved Pierce
+      ScienceClick(560,217,.5) ; Piercing Crit
+      ScienceClick(636,217,.5) ; Particle Impact Tech
+
+      ScienceClick(560,364,.5) ; Weakness Detection
+      ScienceClick(637,362,.5) ; Magnetic Impact
+      ScienceClick(713,362,.5) ; Dynamic Impairment
+      ScienceClick(787,363,.5) ; Artillery Trajectory Research
+
+
+
+      ScienceClick(605,131) ; Missile Science
+
+      ScienceClick(240,341,.5) ; Missile Theory
+      ScienceClick(323,414,.5) ; Cruise Dynamics
+      ScienceClick(398,413,.5) ; Missile Research
+      ScienceClick(475,415,.5) ; Missile Elusion
+      ScienceClick(551,412,.5) ; Missile Space Optimization
+      ScienceClick(322,268,.5) ; Missile Accuracy
+      ScienceClick(396,267,.5) ; Multidirectional Assault
+
+      ScienceClick(476,219,.5) ; Shrapnel Research
+      ScienceClick(552,219,.5) ; Exaltation
+      ScienceClick(626,219,.5) ; Suppression
+      ScienceClick(474,320,.5) ; Nuclear Radiation Research
+      ScienceClick(551,318,.5) ; Break Armor
+      ScienceClick(626,318,.5) ; Energy Conservation
+
+      ScienceClick(626,411,.5) ; Missile Concussion
+      ScienceClick(712,318,.5) ; Rapid Loading
+      ScienceClick(782,318,.5) ; Perfect Storm
+
+
+
+      ScienceClick(680,130) ; Ship-based Science
+
+      ScienceClick(239,316,.5) ; Fighter Weapons Theory
+      ScienceClick(328,215,.5) ; Reconnaissance
+      ScienceClick(405,216,.5) ; Fuel Optimization
+      ScienceClick(480,216,.5) ; Fighter Tech Upgrades
+      ScienceClick(558,214,.5) ; Armor Structural Analysis
+      ScienceClick(633,214,.5) ; Fighter-based Weapons Efficiency
+
+      ScienceClick(330,318,.5) ; Thruster Optimization
+      ScienceClick(330,415,.5) ; Navigation
+      ScienceClick(405,417,.5) ; Fighter Mastery
+      ScienceClick(480,418,.5) ; Fighter Interception Countermeasures
+      ScienceClick(557,416,.5) ; Formation Optimization
+      ScienceClick(632,416,.5) ; Swarm
+
+      ScienceClick(405,319,.5) ; Long-ranged Strike
+      ScienceClick(633,317,.5) ; Fortune
+      ScienceClick(708,315,.5) ; Ingenuity
+      ScienceClick(783,316,.5) ; Heavy Gear Research
+
+
+
+      ScienceClick(754,130) ; Ship Defense Science
+
+      ScienceClick(249,319,.5) ; Ship Defense Tech
+      ScienceClick(342,239,.5) ; Shield Research
+      ScienceClick(424,239,.5) ; Energy Diffusion Tech
+
+      ScienceClick(520,204,.5) ; Penetration Resistance
+      ScienceClick(602,202,.5) ; Augment Shield
+      ScienceClick(684,204,.5) ; Restoration
+      ScienceClick(519,276,.5) ; Augment Absorption
+      ScienceClick(602,271,.5) ; Energy Conservation
+      ScienceClick(684,271,.5) ; Electronic Barrier
+      ScienceClick(777,237,.5) ; Damage Mitigation
+
+      ScienceClick(340,392,.5) ; Ship Structural Analysis
+      ScienceClick(423,389,.5) ; Ship Reinforcement Tech
+
+      ScienceClick(521,357,.5) ; Resilience
+      ScienceClick(602,354,.5) ; Structure Improvement
+      ScienceClick(683,356,.5) ; Fast Repair Tech
+      ScienceClick(520,430,.5) ; Reaction Armor Improvement
+      ScienceClick(604,424,.5) ; Defense Improvement
+      ScienceClick(684,426,.5) ; Reflection Mastery
+      ScienceClick(780,389,.5) ; Stability Mastery
+
+
+
+; Don't touch the next line
+*/

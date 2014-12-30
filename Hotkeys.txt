@@ -1,0 +1,103 @@
+; This file is used in the actual bot, so be careful while editing it.
+; Semicolons are comment characters. This means that the script does not read anything on a line after a semicolon.
+
+; Hotkeys are set up as follows. For single commands, the syntax is:
+; <Hotkey>::<Command>
+
+; For multiple commands, the syntax is:
+; <Hotkey>::
+;   <Command>
+;   <Command>
+; return
+
+; You don't have to worry about the actual commands, but you can configure the hotkeys. The defaults are already set,
+; but you can change them. For example, Ctrl+Shift+r is mapped to Reload, this means that whenever you press that key
+; combination, the script will reload. The syntax for the hotkey is ^+r. Each modifier has its own symbol. Ctrl is ^,
+; Shift is +, Alt is !, and Windows-key is #. For more information, visit http://www.autohotkey.com/docs/Hotkeys.htm.
+
+
+
+; For any changes in the script to take effect, including this file, you must save them and reload the script. The
+; default keyboard shortcut to save a file in most programs is Ctrl+s.
+
+
+    ; Ctrl+Shift+r is the default keyboard shortcut to reload the script.
+    ; Try it now. You should see the green AutoHotkey icon disappear and reappear.
+^+r::Reload
+
+
+    ; Ctrl+Esc disables all hotkey combinations escept itself. Pressing it again toggles them back on.
+    ; Try it now. You should see the H in the icon change to an S and back again.
+    ; Be careful using this, as it will also disable the Pause key.
+    ; I don't recommend using Ctrl+Shift+Esc, because this is the Windows shortcut for Task Manager.
+^Esc::Suspend
+
+
+    ; Ctrl+` (` is the button directly below Esc) pauses the script. Pressing it again unpauses the script.
+    ; Try it now. You should see the green icon change to red and back again.
+    ; If you need a panic button, you might just shorten this to ` and get rid of Ctrl.
+    ; Memorize this hotkey. You will probably need it at some point.
+^`::Pause
+
+
+    ; Ctrl+Shift+m shows the current mouse coordinates (X, Y) and color of that pixel in hex (0xBBGGRR).
+    ; If the game is visible, this will display game coordinates in addition to screen coordinates. Try it now.
+^+m::
+  MouseGetPos xpos, ypos
+  PixelGetColor pixcheck, %xpos%, %ypos%
+  ImageSearch xq, yq, 0, 0, A_ScreenWidth, A_ScreenHeight, *32 Images\Play.bmp
+  if(ErrorLevel=0){
+    xq-=42
+    yq+=17
+    xflash:=xpos-xq
+    yflash:=ypos-yq
+    Msgbox Game Coordinates: %xflash%, %yflash%`nScreen Coordinates: %xpos%, %ypos%`nColor: %pixcheck%
+  }else
+    Msgbox Screen Coordinates: %xpos%, %ypos%`nColor: %pixcheck%
+return
+
+
+    ; Do not start the bot until you have completed the setup process.
+    ; Ctrl+Shift+b starts the bot. You must have a Chrome window open with at least 2 tabs. There should not be an
+    ; excess number of tabs so that the size of each tabs starts to shrink. It helps if tab 1 is already on
+    ; facebook.com, but the bot will figure it out eventually if not. Be patient during the first login process.
+    ; Do not start the bot if you have fleets in League or Space Raids, or in a battle, or in anything that's not an
+    ; instance. If you get disconnected while the bot is running League, it will probably break the bot.
+    ; You should also probably not have fleets sitting anywhere that the bot didn't put them.
+    ; Do not move the ground base or the space base around while the bot is running.
+    ; Make sure to save all files you have changed and reload the script before starting the bot.
+    ; Always stay truced, goddammit. Set an alarm on your phone to warn you when your truce is about to die.
+^+b::
+  #Include Program\Startup.ahk
+  #Include Program\MainLoop.ahk
+return
+
+
+    ; Ctrl+Shift+p prints a debug report.
+    ; You must have an empty text editor open and active, because the script will just start typing. Notepad is fine.
+    ; Try it now, to see what it does. (Open a blank Notepad file first!)
+    ; Wait until it says it's done before touching it again.
+    ; If the bot ever breaks unexpectedly, this is what you should do.
+^+p::
+  #Include Program\Debugger.ahk
+return
+
+
+
+; You shouldn't have to use any hotkeys below this point. You can probably delete them if you really want.
+
+    ; Ctrl+Shift+q will tell you the time that your space rocks are scheduled to be harvested at.
+    ; This is in minutes since midnight, server time.
+^+q::Msgbox RocksTime = %RocksTime%
+
+    ; Ctrl+Shift+c tells the bot that the currently active window is the Chrome browser. I forget exactly what situation
+    ; this is used for, maybe if you accidentally start the bot when Chrome is not the active window.
+^+c::ChromeID:=WinExist("A")
+
+    ; Ctrl+Shift+d toggles debug mode on and off. This will pop up a message box every time the script enters a major
+    ; function. This may come in handy if you are trying to edit the source code yourself.
+^+d::DebugMode:=1-DebugMode
+
+
+
+; Now read Settings.txt.

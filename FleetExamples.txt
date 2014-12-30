@@ -1,0 +1,530 @@
+; This file is not used in the bot, it is purely for reference.
+
+; This first function, BuildFleet, contains a library of individual fleet configurations. The general syntax is this:
+
+; if( Type = <Number> ){
+;   FillStack(A,B,C,D)
+;   FillStack(A,B,C,D)
+;   FillStack(A,B,C,D)
+; }
+
+; You will build your own customized fleets in this way. <Number> can be any number except 1, 2, or 3. The first three
+; numbers are reserved for saved fleets. Just because you have a fleet configuration set up in this way does not mean
+; that it will be used, so you can leave configurations here just to save them.
+
+; The FillStack command is what moves a stack of ships from your inventory into a spot in the fleet.
+; In the syntax given above, FillStack(A,B,C,D), each parameter has a specific meaning.
+
+; The first parameter, A, indicates how many times to press the right arrow on your ship inventory.
+; If the ship you want is in the first 6 slots, then leave A at 0.
+; If you change A to something larger than 0, keep in mind that the game will stay on that page for the rest of that
+; fleet, and not reset to the first page until the fleet is completed. So to fill multiple stacks of a ship on the
+; second page of your inventory, A should be 1 in the first FillStack command, and 0 for the rest of them.
+; A can also be a negative number, this indicates how many times to press the left arrow.
+
+; The second parameter, B, indicates which inventory slot to pull ships from.
+; B should be a number from 1 to 6.
+; Keep in mind if you use up all the ships in an inventory slot, you must adjust future FillStack commands accordingly.
+
+; The third parameter, C, indicates which fleet spot to drop ships into.
+; C should be a number from 1 to 9.
+; 1-3 are the front row, 4-6 are the middle row, and 7-9 are the back row, left to right.
+
+; The fourth parameter, D, indicates how many ships to put in that stack.
+; D is an optional parameter. If you leave it out, the bot will click OK for however many ships are defaulted.
+
+
+
+; Don't touch the following two lines.
+BuildFleet(Type){
+  global
+
+
+
+  ; Fleet type 4 has been left blank, feel free to fill it in.
+
+  if(Type=4){
+    
+  }
+
+
+
+  ; Type 5 is a simple example. I've used the semicolon to type a comment reminding myself that this is my Trial setup.
+  ; This configuration drops 3000 ships from the third inventory slot into each of the 8 outer fleet spots, and then 
+  ; it drops 3000 flagships from my sixth inventory slot into the center fleet spot. Notice that I only need to specify
+  ; 3000 once, and then it is the default after that.
+
+  if(Type=5){ ; Trial
+    FillStack(0,3,1,3000)
+    FillStack(0,3,2)
+    FillStack(0,3,3)
+    FillStack(0,3,4)
+    FillStack(0,3,6)
+    FillStack(0,3,7)
+    FillStack(0,3,8)
+    FillStack(0,3,9)
+    FillStack(0,6,5)
+  }
+
+
+
+  ; Type 6 is very similar to the last example. Notice that the first FillStack command clicks to the second page in my
+  ; inventory, and all the commands after that stay on the second page.
+
+  if(Type=6){ ; Restricted
+    FillStack(1,2,1,3000)
+    FillStack(0,2,2)
+    FillStack(0,2,3)
+    FillStack(0,2,4)
+    FillStack(0,2,6)
+    FillStack(0,2,7)
+    FillStack(0,2,8)
+    FillStack(0,2,9)
+    FillStack(0,3,5)
+  }
+
+
+
+  ; This is my setup for Instance 13 (very useful for leveling multiple commanders at once, fast). It drops 1000 ships
+  ; into the front middle spot, 250 into the center and the back flanks, and 100 flagships into the back middle.
+
+  if(Type=7){ ; i13
+    FillStack(0,3,2,1000)
+    FillStack(0,3,5,250)
+    FillStack(0,3,7)
+    FillStack(0,3,9)
+    FillStack(0,6,8,100)
+  }
+
+
+
+  ; The next three types use a trick that helps out with efficiency. Type 8 drops 100 flagships into the back right
+  ; corner, and then 300 ships into the other back spots. It then uses the SaveFleet command to save this fleet into the
+  ; third save slot. Then it drops 300 ships into two more spots, and saves this configuration into the second save
+  ; slot. Then it drops 300 ships into two more spots, and 1000 ships into the last two spots.
+
+  if(Type=8){ ; i30
+    FillStack(0,6,9,100)
+    FillStack(0,3,8,300)
+    FillStack(0,3,7)
+    SaveFleet(3)
+    FillStack(0,3,6)
+    FillStack(0,3,5)
+    SaveFleet(2)
+    FillStack(0,3,4)
+    FillStack(0,3,3)
+    FillStack(0,3,2,1000)
+    FillStack(0,3,1)
+  }
+
+  ; Type 9 uses the LoadFleet command to load the configuration from save slot 2. Then it drops 1000 ships into two more
+  ; spots. 1000 is the default only because when building my formations (see the SetFormation command below) I build a
+  ; type 9 fleet right after my type 8 fleet, so I know that 1000 is still in the text box. This is not necessary to
+  ; assume, there is no harm in specifying 1000 again, the bot will just type it again. I just chose not to, because I'm
+  ; OCD with efficiency.
+
+  if(Type=9){ ; i30
+    LoadFleet(2)
+    FillStack(0,3,4)
+    FillStack(0,3,3)
+  }
+
+  ; Type 10 loads from save slot 3, and drops 1000 ships in 3 more slots.
+
+  if(Type=10){ ; i30
+    LoadFleet(3)
+    FillStack(0,3,6)
+    FillStack(0,3,5)
+    FillStack(0,3,2)
+  }
+
+
+
+  ; More simple examples that I apparently used:
+
+  if(Type=11){ ; Const Tank
+    FillStack(0,4,5,3000)
+    FillStack(0,5,1)
+    FillStack(0,5,2)
+    FillStack(0,5,3)
+    FillStack(0,5,4)
+    FillStack(0,5,6)
+    FillStack(0,5,7)
+    FillStack(0,5,8)
+    FillStack(0,5,9)
+  }
+
+  if(Type=12){ ; Const Glass / Trial
+    FillStack(0,3,1,3000)
+    FillStack(0,3,2)
+    FillStack(0,3,3)
+    FillStack(0,3,4)
+    FillStack(0,3,6)
+    FillStack(0,3,7)
+    FillStack(0,3,8)
+    FillStack(0,3,9)
+    FillStack(0,6,5)
+  }
+
+
+
+  ; The type number can be anything you want, greater than 3.
+  ; This example clicks to page 3, places a bunch of ships, saves the formation, then clicks back to page 2 and fills in
+  ; the center stack.
+
+  if(Type=95){ ; Example
+    FillStack(2,3,1,3000)
+    FillStack(0,3,2)
+    FillStack(0,3,3)
+    FillStack(0,3,4)
+    FillStack(0,3,6)
+    FillStack(0,3,7)
+    FillStack(0,3,8)
+    FillStack(0,3,9)
+    SaveFleet(3)
+    FillStack(-1,2,5,1500)
+  }
+
+  ; This example loads the formation, clicks to page 2, and fills in the same center stack.
+  ; Setting the fourth parameter, D, to 0 has the same effect as leaving it out.
+
+  if(Type=96){ ; Example
+    LoadFleet(3)
+    FillStack(1,2,5,0)
+  }
+
+  ; This example loads the formation, clicks to page 2, and fills in a different center stack.
+
+  if(Type=97){ ; Example
+    LoadFleet(3)
+    FillStack(1,5,5,1800)
+  }
+
+
+
+  ; These examples save a configuration with a center stack, a front row, and a back middle stack, and then swap out the
+  ; middle and back flanks.
+
+  if(Type=98){ ; Example
+    FillStack(1,5,5)
+    FillStack(0,4,1,3000)
+    FillStack(0,4,2)
+    FillStack(0,4,3)
+    FillStack(0,4,8)
+    SaveFleet(3)
+    FillStack(0,4,4)
+    FillStack(0,4,6)
+    FillStack(0,4,7)
+    FillStack(0,4,9)
+  }
+
+  if(Type=99){ ; Example
+    LoadFleet(3)
+    FillStack(1,3,4)
+    FillStack(0,3,6)
+    FillStack(0,3,7)
+    FillStack(0,3,9)
+  }
+
+
+
+; Don't touch the next line.
+}
+
+
+
+
+
+; This second function, SetFormation, defines the collections of fleets that you will use for each instance type.
+; I've left my configurations in for reference. 
+
+; The CreateFleet(A,B,C,D,E) command creates a fleet. It has 5 possible parameters.
+
+; The first parameter, A, indicates which fleet type to build. You defined these types above.
+; If A is 1, 2, or 3, then the bot will load from the respective save slot.
+
+; The second parameter, B, indicates the range. This parameter is optional, and it defaults to 0. If it is left at 0,
+; the range is not selected. If B is 1, the bot selects Minimum Range. If B is 2, the bot selects Maximum Range.
+
+; The third parameter, C, indicates the targeting. This parameter is optional, and it defaults to 0. If it is left at 0,
+; the target is not selected. If C is 1, the bot selects Closest Target. If C is 2, the bot selects Commander, etc.
+; If C is 7, the bot selects Def. Buildings.
+
+; The fourth parameter, D, indicates the commander. This parameter is optional, and it defaults to 1.
+; This can either be a number or a name. If it is a number, it picks that commander from your list. For example, if D is
+; 15, the bot clicks to the third page of commanders on your fleet build screen and selects the commander in the third
+; slot. Keep in mind that once a commander is used, it disappears from the list of available commanders.
+
+; If D is a name, it must be in quotes, and the bot will find and select that commander. I do not have screenshots of
+; all commanders. If you want to use this method, check in the images folder to make sure I have an image of your
+; commander. If I don't, please send me a screenshot (.bmp or .png) of your fleet build screen with that commander.
+; Be careful that you spell it exactly the way that it appears in the file name. For example, a common misspelling is
+; Raylif instead of Rayllf, who has two "l"s in his name. The bot will tell you if it can't find an image file.
+
+; The fifth parameter, E, indicates which slot to save the fleet formation in. This parameter is optional.
+; If it is left out, the fleet formation will not be saved.
+
+
+
+; Don't touch the following two lines.
+SetFormation(Num){
+  global
+
+
+
+  ; Numbers are locked to their respective instance type. 1 is always Restricteds, 2 is always Trials, 3 is always
+  ; Constellations, and 4 is always Instances. Do not change them, and do not touch the closing braces after each block.
+
+
+
+  if(Num=1){            ; Restricteds
+
+    ; My Restricted setup leaves all fleets at Minimum Range and Closest Target.
+    ; It creates a fleet of type 6, with the 1st commander in my list, and saves the formation in save slot 1.
+    ; It then creates all other fleets by loading them from save slot 1. It creates 2 fleets with the 4th commander in
+    ; my list, and then it uses a trick to create 7 fleets with the 6th commander in my list. It then creates two more
+    ; fleets with the 7th and then the 10th commanders in my list. Then it uses the same trick to create 13 fleets with
+    ; the 11th commander in my list.
+
+    CreateFleet(6,0,0,1,1)
+    CreateFleet(1,0,0,4)
+    CreateFleet(1,0,0,4)
+    Loop 7
+      CreateFleet(1,0,0,6)
+    CreateFleet(1,0,0,7)
+    CreateFleet(1,0,0,10)
+    Loop 13
+      CreateFleet(1,0,0,11)
+
+  }
+
+
+
+  if(Num=2){            ; Trials
+
+    ; The Trial setup uses a slightly different syntax, because it moves the trial fleets instead of leaving them in the
+    ; default locations. You can configure where it moves them to with the TrialFleet settings in Settings.txt.
+    ; The parameters are the same as before, though, just leave the CreateTrialFleet1/2/3/4 syntax alone.
+
+    ; My Trial setup creates a fleet of type 12 and saves it in save slot 2, then it loads slot 2 for the other fleets.
+    ; It sets Maximum Range for each fleet, because the bot exits the fleet build screen after each fleet to move them.
+    ; This is an example of how to choose specific commanders, regardless of where they are in the list.
+
+    CreateTrialFleet1(12,2,0,"DeadlyDuo",2)
+    CreateTrialFleet2(2,2,0,"FrontlineSurge")
+    CreateTrialFleet3(2,2,0,"FatalFuries")
+    CreateTrialFleet4(2,2,0,"KismetBeams")
+
+  }
+
+
+
+  if(Num=3){            ; Constellations
+
+    ; My Constellation setup uses fleet type 11 for a tank, and then fleet type 12 for the other 6 fleets.
+    ; Notice that all type 12 fleets will be set at Maximum Range.
+
+    CreateFleet(11,0,0,"ImpendingDoom")
+    CreateFleet(12,2,0,"DeadlyDuo",2)
+    CreateFleet(2,0,0,"VictoryRoar")
+    CreateFleet(2,0,0,"FatalFuries")
+    CreateFleet(2,0,0,"FrontlineSurge")
+    CreateFleet(2,0,0,"EternalTerrors")
+    CreateFleet(2,0,0,"KismetBeams")
+
+  }
+
+
+
+  if(Num=4){            ; Instances
+
+
+    ; I've used a conditional statement to use different fleet setups for different instances.
+    ; I only have setups for 2 instances. You can do this for as many instances as you want.
+
+    if(InstanceNum=13){
+
+      ; I use Instance 13 to level up to 4 commanders at once. As long as your primary 6 commanders have a certain
+      ; amount of speed (it's pretty low, under 100, I forget how much though), you will finish the instance before the
+      ; enemy fires. My comments to the right of each line indicate the optimal setup to speed-run the instance.
+      ; I used Ship-Based weapons, and all fleets are set to Maximum Range. Frontline Surge is my fastest commander,
+      ; Deadly Duo is my 2nd fastest, Kismet Beams is my 3rd, then Impending Doom, Fatal Furies, and Hand of Lelantos. I
+      ; was leveling up Feral Raptors and a common commander in spot 54 (actually 58, minus Deadly, Fatal, Frontline,
+      ; and Feral). There are 2 more spots to level up commanders, you can use them by deleting the semicolons at the
+      ; beginning of their lines.
+
+      CreateFleet(7,2,3,"DeadlyDuo",1)    ; Speed 2/5
+      CreateFleet(1,0,0,"FatalFuries")    ; Speed 2/5
+      CreateFleet(1,0,0,"FrontlineSurge") ; Speed 1/4
+      CreateFleet(1,0,0,"FeralRaptors")   ; Level
+      CreateFleet(1,0,0,54)               ; Level
+      CreateFleet(1,0,0,"ImpendingDoom")  ; Speed 1/4
+      CreateFleet(1,0,0,"HandofLelantos") ; Speed 6
+      CreateFleet(1,0,0,"KismetBeams")    ; Speed 3
+;      CreateFleet(1,0,0,"")               ; (Level)
+;      CreateFleet(1,0,0,"")               ; (Level)
+
+    }
+
+
+    if(InstanceNum=30){
+
+      ; This is my Instance 30 setup. If you rank your commanders by speed, and then create your fleets in this order,
+      ; filling in commanders in the appropriate line, then you will have the optimal setup. Speed ranks 11 through 15
+      ; don't matter, and I think 9 and 10 are interchangeable. This requires that you have 15 commanders of speed 361
+      ; or higher, and that the top 10 of them have different speeds. You could run this setup with speeds 370, 369,
+      ; 368, 367, 366, 365, 364, 363, 362, 362, 361, 361, 361, 361, 361, if you could get the gems exactly right.
+      ; If you use my fleet types 8, 9, and 10, you can discover my optimal Instance 30 speed run method, with minimal
+      ; ships. The enemy never fires. Most fleets are one shot kills, I think like 2 of them are two shot kills.
+
+      CreateFleet(8,2,3,"ImpendingDoom",1)  ; Speed 4
+      CreateFleet(1,0,0,"KismetBeams")      ; Speed 3
+      CreateFleet(1,0,0,"Donna")            ; (Speed 10)
+      CreateFleet(9,0,0,"FatalFuries",2)    ; Speed 5
+      CreateFleet(2,0,0,"HandofLelantos")   ; Speed 6
+      CreateFleet(1,0,0,"FrontlineSurge")   ; Speed 1
+      CreateFleet(1,0,0,"DeadlyDuo")        ; Speed 2
+      CreateFleet(1,0,0,"Kelly")            ; (Speed 9)
+      CreateFleet(10,0,0,"Maletiz",3)       ; Speed 8
+      CreateFleet(3,0,0,"DesolatePrayers")  ; Speed 7
+      CreateFleet(1,0,0,"Angla")
+      CreateFleet(1,0,0,"Miller")
+      CreateFleet(1,0,0,"LightandDarkness")
+      CreateFleet(1,0,0,"Aileen")
+      CreateFleet(1,0,0,"TacticalWizards")
+
+    }
+
+
+
+; Don't touch the next two lines.
+  }
+}
+
+
+
+
+
+; This third function, SelectFleets, defines the click order when sending fleets into instances. This is mostly obsolete
+; now that IGG lines up the fleets in the same order you create them in, but you can still change the order if you want.
+
+
+
+; Don't touch the following two lines.
+SelectFleets(Num){
+  global
+
+
+
+  if(Num=1){          ; Restricteds
+
+    ; if you use the ClickAllCommanders function, the bot will click all fleets, in order. I think it will click all 9
+    ; spots on each page, whether or not there are that many fleets, so you lose a little bit of time, and may want to
+    ; be more specific when speed running instances.
+
+    ClickAllCommanders()
+
+  }
+
+
+  ; You don't need to specify a click order for Trials, because their position is determined by where they are in your
+  ; space base.
+
+
+  if(Num=3){          ; Constellations
+
+    FindCommander("DeadlyDuo")
+    FindCommander("VictoryRoar")
+    FindCommander("FatalFuries")
+    FindCommander("ImpendingDoom")
+    FindCommander("FrontlineSurge")
+    FindCommander("EternalTerrors")
+    FindCommander("KismetBeams")
+
+  }
+
+
+  if(Num=4){          ; Instances
+
+
+    if(InstanceNum=13){
+
+      FindCommander("DeadlyDuo")      ; Speed 2/5
+      FindCommander("FatalFuries")    ; Speed 2/5
+      FindCommander("FrontlineSurge") ; Speed 1/4
+      FindCommander("FeralRaptors")   ; Level
+      FindCommander("Common")         ; Level
+      FindCommander("ImpendingDoom")  ; Speed 1/4
+      FindCommander("HandofLelantos") ; Speed 6
+      FindCommander("KismetBeams")    ; Speed 3
+;      FindCommander("")               ; (Level)
+;      FindCommander("")               ; (Level)
+
+    }
+
+
+    if(InstanceNum=30){
+
+      FindCommander("ImpendingDoom")    ; Speed 4
+      FindCommander("KismetBeams")      ; Speed 3
+      FindCommander("Donna")            ; (Speed 10)
+      FindCommander("FatalFuries")      ; Speed 5
+      FindCommander("HandofLelantos")   ; Speed 6
+      FindCommander("FrontlineSurge")   ; Speed 1
+      FindCommander("DeadlyDuo")        ; Speed 2
+      FindCommander("Kelly")            ; (Speed 9)
+      FindCommander("Maletiz")          ; Speed 8
+      FindCommander("DesolatePrayers")  ; Speed 7
+      FindCommander("Angla")
+      FindCommander("Miller")
+      FindCommander("LightandDarkness")
+      FindCommander("Aileen")
+      FindCommander("TacticalWizards")
+
+    }
+
+
+
+; Don't touch the next two lines.
+  }
+}
+
+
+
+
+
+; If you want to save multiple Restricted setups, you can use the following syntax, the same way I've done it with
+; normal instances:
+
+; if(RestrictedNum=8){
+;   <Fleet Setup>
+; }
+
+; if(RestrictedNum=10){
+;   <Fleet Setup>
+; }
+
+
+
+; If you want to save multiple Constellation setups, you can use the following syntax:
+
+; if(ConstellationSign=7) and (ConstellationNum=1){
+;   <Fleet Setup>
+; }
+
+; if(ConstellationSign=5) and (ConstellationNum=2){
+;   <Fleet Setup>
+; }
+
+
+
+; You can also simply comment out entire blocks by putting semicolons at the beginning of each line.
+; Or you can use multi-line comment syntax, like this:
+
+/*
+
+The script won't read anything in here.
+Some stuff.
+Some more stuff.
+
+*/

@@ -1,0 +1,698 @@
+; This file is used in the actual bot, so be careful while editing it.
+
+; Most settings in this file are in the form <Variable>=<Value>
+; Some of them are in the form <Variable>:="<Value>" or <Variables>:=[<Value1>,<Value2>]
+; Many of these settings are boolean (binary) values. This means that 0 is off and 1 is on.
+; You should never edit the variable name itself.
+; You should edit the value according to what the description says the variable does.
+
+Control=0
+NumFleets=0
+    ; These settings tells the bot what its current main function is. I recommend leaving both Control and NumFleets set
+    ; at 0, and the bot will auto-detect what to do next. The possible disadvantage to this is that it will always
+    ; dismiss your fleets and set up the correct formation, so if you are restarting the bot and it already has the
+    ; correct formation set up, then this is a waste of time. If you change this to a different number, then the bot
+    ; will assume that it has the corresponding correct formation already set up. 1 is restricteds, 2 is trials, 3 is
+    ; constellations, 4 is instances, and 5 is nothing (it won't run any instances but will do other tasks like
+    ; harvesting, etc.). If you change the Control setting from 0 then you must also change NumFleets to however many
+    ; fleets you have in the current formation. I may try to autodetect NumFleets in a future release. [Nope.] You
+    ; should change this back to 0 after starting the bot, so that you don't accidentally leave it on something else the
+    ; next time you start it.
+
+OpenBrowser=0
+    ; If OpenBrowser is set to 1, the bot will open a Chrome window when it starts. You may set this to 0 if you already
+    ; have a Chrome window open, but you need to make sure that you have all the correct browser settings in effect from
+    ; the readme. Also, tab 1 should be on facebook.com, tab 2 should exist, and there should not be a large number of
+    ; tabs, so that when the bot tries to click on tab 2 it doesn't accidentally click on tab 3.
+
+    ; I can't guarantee that setting OpenBrowser=1 works. It probably doesn't.
+
+LogMain=1
+    ; If LogMain is set to 1, the bot will make sure that your main account is logged into Facebook. If it is set to 0,
+    ; the bot will assume that the correct Facebook account is already logged in, and go immediately to the GO2 website.
+
+ScrollNum=3
+    ; Go to go2.igg.com, scroll to the top of the page, and press the down arrow until the game window is where you want
+    ; it. Set ScrollNum to the number of times you pressed the down arrow. I recommend pushing this as high as possible
+    ; so that the Play link is visible at the top left of the game window, which is probably 2. Windows bubbles like to
+    ; pop up from the system tray at the bottom right of the screen, and it's best if they don't cover up menu buttons
+    ; in the game. Your screen resolution needs to be high enough that the entire game window is visible, down to the
+    ; bottom of the chat box, and the little circle in the lower right. Facebook friends don't need to be on screen.
+TruceDies=-1
+    ; If TruceDies is set (number of minutes from midnight), the bot will dismiss all your fleets when your truce is
+    ; 15 minutes away from dying. This is unreliable as your bot might be messing with alts at the time, or an instance
+    ; might take longer than 15 minutes. Just leave it set to -1 and handle your own truce.
+
+Go2Address:="go2.igg.com"
+    ; Set Go2Address to whatever the address for the HD version is for you. For example, you may need to change it to
+    ; go2eu.igg.com if you are playing on a European server.
+DefaultClickDelay=1200
+    ; DefaultClickDelay controls how long the bot waits, in milliseconds, in between mouse clicks. All wait times are
+    ; multiples of this number. 1000 is a good number, but if you start running into lag errors, where the game isn't
+    ; keeping up with the bot, then increase it to 1200 or higher. Image detection is heavily used to protect against
+    ; lag errors, but there's no way to make it 100% lag proof. To keep your lag times low, make sure there are no
+    ; unnecessary programs running on your computer while the bot is running, and close extra browser tabs.
+IdleWait=120
+    ; IdleWait controls how long the bot waits, in seconds, for your computer to be idle before re-activating itself, if
+    ; you have switched tabs or windows to do something else. This is not 100% perfect; I would not recommend switching
+    ; while the bot is logging in and out of facebook or the game. The best way is to hit the Pause hotkey, then switch,
+    ; then switch back, then hit the Pause hotkey again, but this setting is a backup option in case you accidentally
+    ; switch windows and forget to go back to the game. It will not work if the bot is actually paused.
+
+AddressBarXY:=[551,45]
+Tab1XY:=[67,12]
+Tab2XY:=[258,12]
+EmailXY:=[845,103]
+PasswordXY:=[1020,103]
+LoginXY:=[1138,103]
+LeftSideXY:=[50,150]
+EnterGameXY:=[170,90]
+    ; These settings are pixel locations relative to your screen. You'll need to find each of them with your mouse and
+    ; press the appropriate hotkey (the default is Ctrl+Shift+m) to display the mouse coordinates and then enter them
+    ; here (screen coordinates, not game coordinates). AddressBar is the address bar on your browser. Tab1 and Tab2 are
+    ; the far left sides of tabs 1 and 2 in Chrome, this is so they stay on the correct tabs even when the tabs get
+    ; pushed to the left. Email, Password, and Login are the corresponding fields and button on the facebook homepage.
+    ; LeftSide is anywhere to the left of the game window on go2.igg.com, on the background of the page. EnterGame
+    ; should be in the upper left hand corner of the game window, with the page scrolled down to where it will be when
+    ; the bot is running, according to the ScrollNum setting.
+
+; Disclaimer: All descriptions after this point were done about 6 months after I last touched the program.
+    
+Midnight=1
+    ; If Midnight is set to 1, the bot will run the daily routine when it starts. It will initially skip the routine if
+    ; set to 0. No matter what the setting, it will still do the routine whenever game time hits midnight. If I remember
+    ; correctly, setting it to 2 and 3 are only for internal use of the program, so don't do it.
+RocksTime=300
+    ; RocksTime controls when the bot harvests your space rocks, when it is initially started. After the first time, it
+    ; will set this automatically. This number is the number of minutes from midnight. So noon is 720. If set to -1, it
+    ; will harvest them immediately upon starting.
+HarvestAltsNow=0
+    ; This controls whether the bot goes through your alts immediately after starting and harvests their warehouses.
+
+NumAlts=12
+    ; How many alts you want the bot to run.
+RecruitDelay=90
+    ; Number of minutes to wait between recruiting commanders on main. Should depend on your Command Center level.
+AltsHarvestDelay=90
+    ; Number of minutes to wait between recruiting commanders and harvesting warehouses on alts.
+AltsRecruit=1
+    ; Whether to recruit commanders when cycling through alts.
+
+DoScience=0
+    ; Whether to do science research on your main. If you set this to 1, See ScienceResearch.txt to configure it.
+AltsDoScience=1
+    ; Whether to do science research on your alts. If you set this to 1, See ScienceResearch.txt to configure it.
+
+RestrictedWeike=0
+    ; Whether to just dump a weike into Restricteds for dailies and exit. Overrides all other restricted settings.
+RestrictedNum=0
+    ; Which Restricted to run. Set to 0 to skip restricteds.
+RestrictedHelium=1
+    ; How much He3 to load into each fleet for restricteds (once only). Set to 1 to just Supply All. Set to 0 to skip
+    ; restricteds.
+NumRestricteds=3
+    ; Doesn't do anything yet, except set to 0 to skip restricteds.
+BuyPassports=5
+    ; Number of passports to buy at a time after running out. Set to 0 to not buy passports.
+
+    ; If RestrictedWeike is set to 1, or if RestrictedNum, RestrictedHelium, and NumRestricteds are all greater than 0,
+    ; then the bot will run restricteds. If RestrictedWeike is set to 0 and at least one of the other 3 settings is also
+    ; set to 0, the bot will skip restricteds.
+
+TrialHelium=0
+    ; How much He3 to load into each fleet for each Trial. Set to 1 to just Supply All, set to 0 to skip trials.
+TrialFleets=4
+    ; How many fleets to send into Trials. Set to 0 to skip trials.
+UseSPCards=1
+    ; Doesn't do anything. Make sure you have enough SP.
+BuySPCards=0
+    ; Doesn't do anything.
+TrialFleet1XYT:=[137,91,0] ; Top-Left
+TrialFleet2XYT:=[374,569,0] ; Bottom-Left
+TrialFleet3XYT:=[756,63,0] ; Top-Right
+TrialFleet4XYT:=[898,540,0] ; Bottom-Right
+    ; The first 2 numbers in each set control the pixel locations (game coordinates) of where your trial fleets get
+    ; moved to. I recommend leaving these alone, as they are spread out and do not interfere with a maximized chat box
+    ; or the resource productivity box or builds. The third number controls how many times to turn each fleet.
+
+ConstellationSign=7
+    ; Aries=1, Taurus=2, Gemini=3, Cancer=4, Leo=5, Virgo=6, Libra=7
+    ; Scorpio=8, Sagittarius=9, Capricorn=10, Aquarius=11, Pisces=12
+ConstellationNum=1
+    ; Which constellation within the sign to run.
+ConstellationHelium=500000
+    ; How much He3 to load into each fleet for each Constellation run. Set to 1 to just Supply All.
+NumConstellations=0
+    ; Number of times to run Constellations each day.
+
+    ; Set any of these options to 0 to skip constellations.
+
+InstanceNum=30
+    ; Which Instance to farm.
+InstanceHelium=1
+    ; How much He3 to load into each fleet for Instances. Set to 1 to just Supply All.
+RefillEvery=40
+    ; Number of Instances to run between He3 refills.
+NumInstances=1000
+    ; Number of Instances to run each day, if time allows.
+
+    ; Set any of these options to 0 to skip instances.
+
+OpenBoxEvery=1
+    ; Number of Instances to run between opening instance boxes.
+OpenBoxes=10
+    ; How many instance boxes to open at a time.
+
+    ; You may only need to open every other box or every third box in order to keep enough He3 around. Instance boxes
+    ; are opened while an instance is running, so if you have a large number of boxes saved up, it may be most time
+    ; effective to open 5 or 10 boxes after each instance run. The bot will automatically know if all your instance
+    ; boxes have been opened, and will not keep trying to open them.
+
+LeagueFleets=4
+    ; Number of fleets to run in League.
+LeagueHelium=0
+    ; How much He3 to load into each fleet for League.
+LeagueRank=10
+    ; This option controls start and end times for league, I recommend leaving it at 10.
+
+    ; Set any of these options to 0 to skip league.
+    ; If you want to run a specific fleet setup for League, you should handle it yourself and tell the bot to skip it.
+
+DoAltsSpins=1
+DoAltsRestricteds=1
+DoAltsDonate=1
+DoAltsStealRocks=0
+DoAltsSpaceRocks=0
+DoAltsGetVouchers=0
+DoAltsWrenches=0
+    ; These settings give you granular control over which dailies your alts should do. Restricteds are done with weikes.
+
+AltsWrenchAll=0
+    ; If this is set to 1, your alts will wrench everybody in their game friends list and Facebook friends list. If this
+    ; is set to 0, your alts will only wrench the first 8 people in their game friends list. This setting is the most
+    ; efficient if your alts have no game friends except the 8 alts that the Readme described. (Your main will always
+    ; wrench everybody, because don't be a dick.)
+
+RetryAltsSpins=0
+RetryAltsRestricteds=0
+RetryAltsDismissFleets=1
+RetryAltsDonate=0
+RetryAltsStealRocks=0
+RetryAltsSpaceRocks=0
+RetryAltsWrenches=0
+RetryAltsQuestRewards=0
+RetryAltsHarvest=0
+    ; These settings give you granular control over whether the bot should retry alt dailies if it is disconnected while
+    ; attempting to do them. Keep in mind that if somebody else has access to your alts, this could result in them
+    ; fighting the bot for control of the alt. The bot harvests your alts warehouses periodically, this is controlled by
+    ; AltsHarvestDelay. All other dailies are done once per day.
+
+DisconnectDelay=3
+    ; Number of seconds to wait before reloading after disconnection.
+DoubleDisconnectDelay=60
+    ; Number of seconds to wait before reloading after disconnection twice in a row. (I think)
+ReconnectWait=30
+    ; I think this is the number of seconds that controls the definition of "twice in a row". If you are disconnected
+    ; and the bot reconnects, and it is disconnected again within this amount of time, it counts as a second disconnect.
+    ; After that, it just counts as a normal disconnect.
+
+    ; I think all these settings only apply to the bot when it is running your main account. The purpose appears to be
+    ; to allow you to leave the bot running at home and login to your account from somewhere else to check up on it. I
+    ; have the defaults set at DisconnectDelay=3, DoubleDisconnectDelay=60, and ReconnectWait=30. So with these
+    ; settings, you can log on from work, and the bot will immediately reconnect and kick you off, unless it is busy
+    ; running alts. This may be decent protection against somebody else logging on to your account and screwing up the
+    ; bot. But then if you reconnect within 30 seconds, then the bot will give you 60 seconds to check your stuff before
+    ; reconnecting and continuing. You can set the numbers low to make the bot always aggressively reconnect, or you can
+    ; set them high to give yourself more time on a remote login.
+
+AltsRetryDelay=3
+    ; Number of seconds to wait before retrying an alt task after disconnection, if alts are set to retry that task.
+
+ScreenSaver=10
+    ; Number of minutes before your computer's screensaver kicks on. The bot will move the mouse to make sure that the
+    ; screensaver never activates.
+TimeZoneOffset=60
+    ; Number of minutes to add to your system (computer) time to get to game time. For example:
+    ; If your system time is 5pm when game time is 6pm, set this to 60.
+    ; If your system time is 9pm when game time is 7pm, set this to -120.
+    ; You have to adjust this manually if your computer automatically adjusts for Daylight Saving Time.
+
+UnlockMain=0
+UnlockAlts=1
+    ; If Facebook locks your account because of suspicious access, setting this to 1 will auto-unlock your account and
+    ; approve whoever logged onto your account. There are separate settings for your main and your alts.
+    ; I doubt that this actually works anymore. Facebook likes to change things up.
+
+WorldChat=0
+CorpsChat=1
+PlanetChat=1
+TeamChat=1
+PMChat=1
+BattleChat=1
+    ; These settings control which chat channels are turned on and off. It's very useful to always keep world chat off.
+
+ChatSize=2
+    ; How many times to expand the chat box, 0, 1, or 2.
+DefaultChannel=2
+    ; Which channel to talk on, by default. World=1, Corps=2, Planet=3, etc.
+ShowProductivity=1
+    ; Whether to click the arrow under your resource numbers.
+ShowBuilds=1
+    ; Whether to show your build times (button at the extreme bottom right of the playfield).
+
+RestrictedInstanceRewards=1
+ScenarioInstance=1
+ConstellationInstance=1
+InstanceReward=1
+DailyLeagueMatchReward=1
+RewardsforDefeatingPirates=1
+ReturnItem=1
+CancelSale=1
+Salehasexpired=1
+Salesuccessful=1
+Purchasesuccessful=1
+ResourcesGainedfromWar=1
+EventReward=1
+SystemVoucher=1
+LeagueMatchResults=1
+WarReportsDefeat=1
+WarReportsVictory=1
+RankChange=1
+OtherMessages=1
+    ; These settings control which types of mail the bot will automatically delete. It will collect all items from all
+    ; mail that it deletes.
+
+ShareWheel=3
+ShareRestricted=0
+ShareLeague=1
+ShareDefeat=0
+ShareVictory=0
+ShareLevelUp=1
+    ; These settings control what type of messages are shared on Facebook. ShareWheel controls how many wheel spins are
+    ; shared, per day, all the others are either on or off. I think you need at least 3 shares per day for vouchers or
+    ; something.
+
+AltsRestrictedInstanceRewards=0
+AltsScenarioInstance=0
+AltsConstellationInstance=0
+AltsInstanceReward=1
+AltsDailyLeagueMatchReward=1
+AltsRewardsforDefeatingPirates=1
+AltsReturnItem=1
+AltsCancelSale=1
+AltsSalehasexpired=1
+AltsSalesuccessful=1
+AltsPurchasesuccessful=1
+AltsResourcesGainedfromWar=0
+AltsEventReward=1
+AltsSystemVoucher=1
+AltsLeagueMatchResults=1
+AltsWarReportsDefeat=0
+AltsWarReportsVictory=1
+AltsRankChange=1
+AltsOtherMessages=0
+    ; Mail settings for alts.
+
+AltsShareWheel=3
+AltsShareRestricted=1
+AltsShareLeague=0
+AltsShareDefeat=0
+AltsShareVictory=0
+AltsShareLevelUp=0
+    ; Share settings for alts.
+
+ChallengingChest=1
+NewYearChest=1
+2013SupplyChest=0
+MetalMiningBoost=1
+He3MiningBoost=1
+ExtraTax=1
+PrimaryMetalPack=1
+JuniorMetalPack=1
+SeniorMetalPack=1
+PrimaryHe3Pack=1
+JuniorHe3Pack=1
+SeniorHe3Pack=1
+GoldPack=1
+SeniorGoldPack=1
+ResourceBox=1
+ExtraTaxAdv=1
+Badge=1
+EmblemofHonor=1
+GiftPack=1
+LuxuriousPlanet=0
+MetallicPlanet=0
+GaseousPlanet=1
+OrdinaryPlanet=0
+TreasureBox=0
+QuadraGemsChest=0
+RaidersChest=0
+FinalScenarioChest=1
+ScrollChest=1
+ScrollChest2345=1
+CorsairsChest=1
+BlackHoleChest=1
+ChimeraChest=1
+SaganChest=1
+    ; These settings control which items from your bag the bot will automatically use. If more than 1 type of planet
+    ; (Luxurious, Metallic, or Gaseous) is set, none of them will be used, so only set 1. I recommend leaving
+    ; TreasureBox off, otherwise the box may sit there forever opening hundreds of boxes. Instead, use the OpenBoxEvery
+    ; and OpenBoxes settings with the instance settings to do this while running instances.
+
+AltsChallengingChest=1
+AltsNewYearChest=1
+Alts2013SupplyChest=1
+AltsMetalMiningBoost=1
+AltsHe3MiningBoost=1
+AltsExtraTax=1
+AltsPrimaryMetalPack=1
+AltsJuniorMetalPack=1
+AltsSeniorMetalPack=1
+AltsPrimaryHe3Pack=1
+AltsJuniorHe3Pack=1
+AltsSeniorHe3Pack=1
+AltsGoldPack=1
+AltsSeniorGoldPack=1
+AltsResourceBox=1
+AltsExtraTaxAdv=1
+AltsBadge=1
+AltsEmblemofHonor=1
+AltsGiftPack=1
+AltsLuxuriousPlanet=1
+AltsMetallicPlanet=0
+AltsGaseousPlanet=0
+AltsOrdinaryPlanet=0
+AltsTreasureBox=1
+AltsQuadraGemsChest=1
+AltsRaidersChest=1
+AltsFinalScenarioChest=1
+AltsScrollChest=1
+AltsScrollChest2345=1
+AltsCorsairsChest=1
+AltsBlackHoleChest=1
+AltsChimeraChest=1
+AltsSaganChest=1
+Alts2013SupplyChest=1
+    ; Alt bag settings.
+
+Email0:="zook@gmail.com"
+Password0:="zookpassword1234567890!!!"
+    ; Your main account email and password, inside quotes. The bot may have trouble interpreting certain reserved
+    ; symbols, I forget which ones, but you'll find out pretty fast if it has trouble logging you in. Semicolons and
+    ; percent symbols and quotes are probably bad, maybe a couple others.
+    ; Read http://www.autohotkey.com/docs/commands/_EscapeChar.htm if you really need to use them.
+
+    ; These are not saved anywhere except this file. They are only used to login to Facebook. They will be printed if
+    ; you execute a debug report (see the readme), but you can delete them from the report before sending it in. The
+    ; debugger will remind you that you can do this.
+
+Email1:="alt1@gmail.com"
+Email2:="alt2@gmail.com"
+Email3:="alt3@gmail.com"
+Email4:="alt4@gmail.com"
+Email5:="alt5@gmail.com"
+Email6:="alt6@gmail.com"
+Email7:="alt7@gmail.com"
+Email8:="alt8@gmail.com"
+Email9:="alt9@gmail.com"
+Email10:="alt10@gmail.com"
+Email11:="alt11@gmail.com"
+Email12:="alt12@gmail.com"
+
+Password1:="altpassword1234567890!!!"
+Password2:="altpassword1234567890!!!"
+Password3:="altpassword1234567890!!!"
+Password4:="altpassword1234567890!!!"
+Password5:="altpassword1234567890!!!"
+Password6:="altpassword1234567890!!!"
+Password7:="altpassword1234567890!!!"
+Password8:="altpassword1234567890!!!"
+Password9:="altpassword1234567890!!!"
+Password10:="altpassword1234567890!!!"
+Password11:="altpassword1234567890!!!"
+Password12:="altpassword1234567890!!!"
+
+    ; Your alt emails and passwords, inside quotes. You can add more alts if you follow the pattern, or you can delete
+    ; lines you don't need, but don't skip numbers. Alts need to be numbered 1 through NumAlts. Extra alts will be
+    ; ignored, if NumAlts=5 but you have 10 emails listed here, the bot will ignore 6 through 10.
+
+Warehouse0XY:=[721,381]
+    ; The X and Y coordinates of your Resource Warehouse. To find these you need to reload the game to make sure your
+    ; ground base is centered, then put your mouse pointer over the exact center of the diamond on top of the Warehouse,
+    ; and then press the appropriate hotkey (the default is Ctrl+Shift+m). The Warehouse must be visible without moving
+    ; the ground base from center, and it should not be behind the chat box or anything else.
+
+    ; Attempts to autodetect these coordinates have failed. Sorry.
+
+Warehouse1XY:=[147,332]
+Warehouse2XY:=[586,271]
+Warehouse3XY:=[669,295]
+Warehouse4XY:=[547,215]
+Warehouse5XY:=[505,160]
+Warehouse6XY:=[505,161]
+Warehouse7XY:=[475,150]
+Warehouse8XY:=[505,161]
+Warehouse9XY:=[548,203]
+Warehouse10XY:=[549,202]
+Warehouse11XY:=[547,201]
+Warehouse12XY:=[547,202]
+    ; Same process with alt warehouses. Add or delete rows as needed.
+
+SpaceRocks0=2
+    ; What rocks to plant on main, 1=Metal, 2=He3, 0=Half Each.
+
+SpaceRocks1=0
+SpaceRocks2=0
+SpaceRocks3=0
+SpaceRocks4=0
+SpaceRocks5=0
+SpaceRocks6=0
+SpaceRocks7=0
+SpaceRocks8=0
+SpaceRocks9=0
+SpaceRocks10=0
+SpaceRocks11=0
+SpaceRocks12=0
+    ; What rocks to plant on alts.
+
+StealRocks0=2
+    ; The bot will search through your friends list every day for people to harvest space rocks from. This number
+    ; controls how many people it will steal from before it stops searching.
+
+StealRocks1=1
+StealRocks2=1
+StealRocks3=1
+StealRocks4=1
+StealRocks5=1
+StealRocks6=1
+StealRocks7=1
+StealRocks8=1
+StealRocks9=1
+StealRocks10=1
+StealRocks11=1
+StealRocks12=1
+    ; Same settings for alts.
+
+StealRocksList1:=[1,4]
+StealRocksList2:=[5,6]
+StealRocksList3:=[4,7]
+StealRocksList4:=[4,6]
+StealRocksList5:=[]
+StealRocksList6:=[]
+StealRocksList7:=[]
+StealRocksList8:=[]
+StealRocksList9:=[6,8]
+StealRocksList10:=[7,8]
+StealRocksList11:=[2,8]
+StealRocksList12:=[2,3]
+    ; These options control which game friends your alts will try to steal rocks from, until they hit the max defined by
+    ; StealRocks. The format is a comma separated list, and it can have as many entries as you want. For example, if you
+    ; set it at [2,5,10,20], the bot will attempt to steal from the 2nd, 5th, 10th, and 20th friends in your game
+    ; friends list. Leave it blank [] to search the entire friends list, including Facebook friends.
+
+    ; This setting is useful for making sure that your alts don't all steal from the same people and crowd each other
+    ; out of steals. If you write your alts in a circle again as described in Readme.txt, the method I use is to have
+    ; each alt steal from the 2 alts behind it in line. So A steals from B and C, B steals from C and D, the last in
+    ; line steals from the first two, etc. This works pretty well once the bot has synced all the alts harvest times.
+    ; It does require logging into alt A and finding out where B and C fall in the friends list, etc.
+    ; Your main does not have this option.
+
+DismissCommons0=1
+    ; If this option is set to 1, the bot will dismiss common commanders when the Command Center is maxxed. If it is set
+    ; to 2, the bot will dismiss commons every time it recruits a commander. If it is set to 0, the bot will never
+    ; dismiss commons.
+
+    ; I collected images for the command center maxxing at 10/10, 15/15, 20/20, 25/25, 30/30, 40/40, 45/45, 50/50, and
+    ; 60/60, so this will not work if you have 35/35 commanders. Let me know if you can get a screenshot of 35/35, and
+    ; I'll fix it. Screenshots must be .bmp or .png, not .jpg.
+
+DismissCommons1=0
+DismissCommons2=0
+DismissCommons3=0
+DismissCommons4=0
+DismissCommons5=0
+DismissCommons6=0
+DismissCommons7=0
+DismissCommons8=1
+DismissCommons9=1
+DismissCommons10=1
+DismissCommons11=1
+DismissCommons12=1
+    ; Same settings for alts.
+
+DonateMetal0=0
+    ; How much metal to donate daily, on main.
+DonateHelium0=0
+    ; How much helium to donate daily, on main.
+DonateGold0=0
+    ; How much gold to donate daily, on main.
+
+    ; These are in donation points, not resource numbers, so donate 20, not 200,000.
+
+DonateMetal1=45
+DonateMetal2=45
+DonateMetal3=45
+DonateMetal4=45
+DonateMetal5=45
+DonateMetal6=45
+DonateMetal7=45
+DonateMetal8=45
+DonateMetal9=45
+DonateMetal10=45
+DonateMetal11=45
+DonateMetal12=45
+    ; Alt metal donations.
+
+DonateHelium1=45
+DonateHelium2=45
+DonateHelium3=45
+DonateHelium4=45
+DonateHelium5=45
+DonateHelium6=45
+DonateHelium7=45
+DonateHelium8=45
+DonateHelium9=45
+DonateHelium10=45
+DonateHelium11=45
+DonateHelium12=45
+    ; Alt helium donations.
+
+DonateGold1=0
+DonateGold2=0
+DonateGold3=0
+DonateGold4=0
+DonateGold5=0
+DonateGold6=0
+DonateGold7=0
+DonateGold8=0
+DonateGold9=0
+DonateGold10=0
+DonateGold11=0
+DonateGold12=0
+    ; Alt gold donations.
+
+MallLevel1=5
+MallLevel2=5
+MallLevel3=5
+MallLevel4=5
+MallLevel5=5
+MallLevel6=5
+MallLevel7=5
+MallLevel8=5
+MallLevel9=5
+MallLevel10=5
+MallLevel11=5
+MallLevel12=5
+
+MallShip1=3
+MallShip2=3
+MallShip3=3
+MallShip4=3
+MallShip5=3
+MallShip6=3
+MallShip7=3
+MallShip8=3
+MallShip9=3
+MallShip10=3
+MallShip11=3
+MallShip12=3
+
+    ; These settings control what mall ships your alts will buy with their donation points. The default is Vortex-A, the
+    ; best ship to scrap for resources. Set either MallLevel or MallShip to 0 for any particular alt to skip this.
+
+SpinWheelVouchers0=0
+    ; How many vouchers to burn on the wheel after your free spin(s).
+
+SpinWheelVouchers1=0
+SpinWheelVouchers2=0
+SpinWheelVouchers3=0
+SpinWheelVouchers4=0
+SpinWheelVouchers5=0
+SpinWheelVouchers6=0
+SpinWheelVouchers7=0
+SpinWheelVouchers8=0
+SpinWheelVouchers9=0
+SpinWheelVouchers10=0
+SpinWheelVouchers11=0
+SpinWheelVouchers12=0
+    ; Same settings for alts.
+
+Recurring=1
+    ; If Recurring is set to 1, the bot will burn that many vouchers once per day. If it is set to 0, it will be a
+    ; one-time burn.
+
+
+
+    ; You shouldn't have to touch the settings below here. They are pixel locations for instances. However, if new
+    ; Constellations are added, you will have to fill in the click locations if you want to auto-run them. Use the
+    ; hotkey to get the mouse position (default is Ctrl+Shift+m). The 0 coordinates are to get into each Constellation
+    ; from the zodiac screen, the rest are for the individual instances. If more Constellations are added beyond the
+    ; first 4 in each group, you should be able to expand the array and it will work. Just follow the pattern.
+
+;                     1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30
+InstanceLocationsX:=[260,302,254,321,374,386,374,297,260,254,290,308,361,429,362,435,452,435,482,553,571,506,554,500,487,434,488,548,560,566]
+InstanceLocationsY:=[140,176,247,222,152,217,277,296,368,431,474,410,457,481,348,325,264,193,144,138,174,204,240,295,354,402,461,353,408,475]
+
+;                       1   2   3   4   5   6   7   8   9   10
+RestrictedLocationsX:=[261,302,253,294,383,429,557,580,455,409]
+RestrictedLocationsY:=[152,294,363,459,422,465,430,321,343,271]
+
+;                           0   1   2   3   4   5   6   7   8
+ConstellationLocations1X:=[321]
+ConstellationLocations1Y:=[228]
+ConstellationLocations2X:=[378,312,409,327,268]
+ConstellationLocations2Y:=[192,236,299,301,300]
+ConstellationLocations3X:=[443]
+ConstellationLocations3Y:=[192]
+ConstellationLocations4X:=[505]
+ConstellationLocations4Y:=[225]
+ConstellationLocations5X:=[541,574,552,491,482]
+ConstellationLocations5Y:=[284,277,226,190,242]
+ConstellationLocations6X:=[537,418,441,423,358]
+ConstellationLocations6Y:=[351,156,213,299,201]
+ConstellationLocations7X:=[506,491,358,557,306]
+ConstellationLocations7Y:=[411,183,190,299,286]
+ConstellationLocations8X:=[445,517,549,564,494]
+ConstellationLocations8Y:=[443,204,235,291,276]
+ConstellationLocations9X:=[376,478,441,411,334]
+ConstellationLocations9Y:=[441,191,247,303,358]
+ConstellationLocations10X:=[318,387,342,306,271]
+ConstellationLocations10Y:=[410,173,324,362,444]
+ConstellationLocations11X:=[286,479,394,312,317]
+ConstellationLocations11Y:=[351,191,239,285,327]
+ConstellationLocations12X:=[285,362,330,334,338]
+ConstellationLocations12Y:=[286,195,230,270,324]
+
+
+
+; Don't touch these settings:
+
+CoordMode, Mouse, Screen
+CoordMode, Pixel, Screen
+xdiff=-42
+ydiff=17
+DebugMode=0
+
+
+
+; Now read Fleets.txt
