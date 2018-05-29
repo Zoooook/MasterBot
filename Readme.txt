@@ -2,9 +2,6 @@ This bot requires a lot of preliminary setup. There is a learning curve. Please 
 
 The newest version will always be at https://www.dropbox.com/s/2uonih8hu3med0g/MasterBot.zip
 
-Contact email: koozhk.koozhk@gmail.com
-ShadowEdge can also probably get ahold of me.
-
 This bot can be considered abandonware. I may try to fix serious bugs, but I will not be adding new features. You are welcome to modify the source code. Let me know if you distribute it though. Notepad++ has syntax highlighting for AutoIt3, it's close enough to work for AutoHotkey. Sublime has decent highlighting, check http://www.autohotkey.com/board/topic/46447-sublime-text-editor-very-nice/?p=349495 and https://sublime.wbond.net/packages/Neon%20Color%20Scheme.
 
 I can't keep up with every Chrome update or Facebook layout change. The bot relies heavily on image detection. If the bot breaks, it's likely that I just need to update an image. Take a screenshot of wherever the bot is broken at, run a debug report (see Hotkeys.txt), and send it to me. If you can figure out which image is the problem, you may be able to just replace it and the problem may go away.
