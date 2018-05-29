@@ -549,5 +549,3 @@ Some more stuff.
 
 ; The bot has been known to miss a fleet on very rare occasion when building a formation. I'm sure there's a reason for
 ; it, although I don't know exactly what it is. It's probably a lag error caused by running it on my slow-ass computer.
-
-; Email comments to koozhk.koozhk@gmail.com, I would love to hear feedback.
